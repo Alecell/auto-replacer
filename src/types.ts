@@ -18,6 +18,7 @@ export type MatchGroup = {
 };
 
 export interface Rule {
+	name: string;
 	key: string;
 	regex: {
 		pattern: string;

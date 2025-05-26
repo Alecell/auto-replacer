@@ -1,8 +1,28 @@
-/*
+.auto-replacer__rule-setting__rule {
+	margin-top: 15px;
+	padding: 15px 0;
+	border-top: 1px solid gray;
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.auto-replacer__rule-setting__upper-container {
+	display: flex;
+	gap: 10px;
+}
 
-If your plugin does not need CSS, delete this file.
+.auto-replacer__rule-setting__bottom-container {
+	display: grid;
+	gap: 10px;
+}
 
-*/
+.auto-replacer__rule-setting__rule-input {
+	flex: 1;
+	height: 30px;
+}
+
+.auto-replacer__rule-setting__rule-textarea {
+	resize: vertical;
+	min-height: 144px;
+}

@@ -3,7 +3,7 @@ import { AutoReplacerPlugin } from "./auto-replacer-plugin/AutoReplacerPlugin";
 import { AutoReplacerSettingsTab } from "./settings/AutoReplacerSettings";
 
 export default class AutoReplacer extends Plugin {
-	onload() {
+	onload = () => {
 		const plugin = new AutoReplacerPlugin(this);
 		const settings = new AutoReplacerSettingsTab(this);
 
@@ -13,5 +13,5 @@ export default class AutoReplacer extends Plugin {
 			"editor-change",
 			debounce(plugin.findAndReplace, 300)
 		);
-	}
+	};
 }

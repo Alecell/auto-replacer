@@ -68,6 +68,7 @@ function transformNoteTitle(
 // Obsidian Layer
 const rules: Rule[] = [
 	{
+		name: "Adjust Note Title",
 		key: "adjustNoteTitle",
 		regex: {
 			pattern: "(?<!\\*\\*)\\b{{file.basename}}\\b(?!\\*\\*)",
@@ -80,7 +81,7 @@ const rules: Rule[] = [
 export class AutoReplacerPlugin {
 	constructor(private plugin: AutoReplacer) {}
 
-	findAndReplace(editor: Editor): void {
+	findAndReplace = (editor: Editor): void => {
 		const content = editor.getValue();
 		const file = this.plugin.app.workspace.getActiveFile();
 
@@ -104,9 +105,14 @@ export class AutoReplacerPlugin {
 				changes,
 			});
 		}
-	}
+	};
 
-	findRegexMatches(text: string, rules: Rule[], editor: Editor, file: TFile) {
+	findRegexMatches = (
+		text: string,
+		rules: Rule[],
+		editor: Editor,
+		file: TFile
+	) => {
 		const result: MatchGroup = {};
 		const normalizedText = normalize(text);
 
@@ -144,13 +150,13 @@ export class AutoReplacerPlugin {
 		}
 
 		return result;
-	}
+	};
 
-	resolveDynamicPlaceholders(
+	resolveDynamicPlaceholders = (
 		inputString: string,
 		editor: Editor,
 		file: TFile
-	) {
+	) => {
 		return inputString.replace(/{{(.*?)}}/g, (_, path) => {
 			const value = this.resolvePathFromEditor(path.trim(), editor, file);
 
@@ -163,9 +169,13 @@ export class AutoReplacerPlugin {
 					". You can only use strings or numbers in {{}} placeholders."
 			);
 		});
-	}
+	};
 
-	resolvePathFromEditor(path: string, editor: Editor, file: TFile): unknown {
+	resolvePathFromEditor = (
+		path: string,
+		editor: Editor,
+		file: TFile
+	): unknown => {
 		const parts = path.split(".");
 		let current: unknown;
 
@@ -191,14 +201,14 @@ export class AutoReplacerPlugin {
 		}
 
 		return current;
-	}
+	};
 
-	applyTransformsFromRules(
+	applyTransformsFromRules = (
 		matchesByKey: MatchGroup,
 		rules: Rule[],
 		editor: Editor,
 		file: TFile
-	) {
+	) => {
 		const result: MatchGroup = {};
 
 		for (const key in matchesByKey) {
@@ -213,12 +223,12 @@ export class AutoReplacerPlugin {
 		}
 
 		return result;
-	}
+	};
 
-	getEditorChangesFromTransforms(
+	getEditorChangesFromTransforms = (
 		transforms: MatchGroup,
 		editor: Editor
-	): EditorChange[] {
+	): EditorChange[] => {
 		const changes = [];
 
 		for (const transformArray of Object.values(transforms)) {
@@ -234,5 +244,5 @@ export class AutoReplacerPlugin {
 		}
 
 		return changes;
-	}
+	};
 }
