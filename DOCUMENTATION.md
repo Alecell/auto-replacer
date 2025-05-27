@@ -79,7 +79,7 @@ So please — only run code that you fully understand.
 Auto Replacer offers you the power to automate and enhance your note-taking...
 But as a certain wise uncle once said:
 
-With great power comes great responsibility.
+> With great power comes great responsibility.
 
 ### 🌀 Infinite Loops
 
