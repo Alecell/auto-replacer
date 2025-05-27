@@ -20,13 +20,10 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 				cb.setCta();
 				cb.setButtonText("Docs");
 				cb.onClick(() => {
-					window.open("LINK_TO_DOCS", "_blank");
-				});
-			})
-			.addButton((cb) => {
-				cb.setButtonText("Open FAQ");
-				cb.onClick(() => {
-					window.open("LINK_TO_FAQ", "_blank");
+					window.open(
+						"https://github.com/Alecell/auto-replacer/blob/master/DOCUMENTATION.md",
+						"_blank"
+					);
 				});
 			})
 			.addButton((cb) => {

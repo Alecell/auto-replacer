@@ -39,10 +39,13 @@ function transformNoteTitle(occurrence, editor, file) {
 
 ## 📋 Example Rules
 
-| Name               | Pattern                                  | Replace With   |     |     |     |     |     |
-| ------------------ | ---------------------------------------- | -------------- | --- | --- | --- | --- | --- |
-| Replace Note Title | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` | `**NoteName**` |     |     |     |     |     |
-| Bold Narym         | `(?<!\*\*)\bnarym\b(?!\*\*)`             | `**Narym**`    |     |     |     |     |     |
+| Name                  | Pattern                                  | Replace With         |
+| --------------------- | ---------------------------------------- | -------------------- | ----------- | -------------- | ----- | ------------ |
+| Replace Note Title    | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` | `**NoteName**`       |
+| Bold Narym            | `(?<!\*\*)\bnarym\b(?!\*\*)`             | `**Narym**`          |
+| Strike Temperature    | `\b\d+(?:\.\d+)?\s\*(?:°C                | C                    | celsius)\b` | eg: `~~26°C~~` |
+| Emphasize Measurement | `\b\d+(?:\.\d+)?\s\*(?:km                | mi                   | kg          | g              | m)\b` | eg: `*49km*` |
+| Fix Double Spaces     | ` {2,}`                                  | `' '` (single space) |
 
 ---
 
@@ -79,11 +82,11 @@ function transformNoteTitle(occurrence, editor, file) {
 
 ## 📚 Documentation
 
-| Section          | Link                                             |
-| ---------------- | ------------------------------------------------ |
-| Plugin on GitHub | [🔗 GitHub Repo](https://github.com/your-repo)   |
-| FAQ              | [❓ FAQ](https://github.com/your-repo#faq)       |
-| Submit Issue     | [🐛 Report](https://github.com/your-repo/issues) |
+| Section          | Link                                                                                      |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| Learn More       | [📚 Documentation](https://github.com/Alecell/auto-replacer/blob/master/DOCUMENTATION.md) |
+| Plugin on GitHub | [🔗 GitHub Repo](https://github.com/Alecell/auto-replacer)                                |
+| Submit Issue     | [🐛 Report](https://github.com/Alecell/auto-replacer/issues/new)                          |
 
 ---
 
