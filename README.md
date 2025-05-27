@@ -78,6 +78,18 @@ function transformNoteTitle(occurrence, editor, file) {
 -   Avoid writing transform functions that return unchanged text since it may cause unnecessary loops
 -   Despite the fact that I tested it with book-size notes without problems, it also have a concern when we have too many patterns found on the same file without reasonable gaps between them, but since the word _hobbit_ is mentioned only 400 times on LOtR I _think_ it'll not be a problem.
 
+#### 🛑 Only Run Code You Understand
+The Auto Replacer plugin allows you to write and execute custom JavaScript functions to dynamically transform matched content within your notes. These functions are executed locally, directly in your Obsidian vault, and are never transmitted anywhere.
+
+However, executing arbitrary code — even if it looks innocent — can have unintended consequences. You have full control over what the plugin runs, which also means you take full responsibility for what it does. A simple typo can break your notes. A badly written loop can slow down your editor. And a malicious snippet (if ever copied from somewhere) could do far worse.
+
+So please — only run code that you fully understand.
+
+Auto Replacer offers you the power to automate and enhance your note-taking...
+But as a certain wise uncle once said:
+
+> With great power comes great responsibility.
+
 ---
 
 ## 📚 Documentation
