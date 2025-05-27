@@ -69,6 +69,17 @@ No escaping is needed. Just write it as-is.
 ---
 
 ## ⚠️ Warnings & Limitations
+### 🛑 Only Run Code You Understand
+The Auto Replacer plugin allows you to write and execute custom JavaScript functions to dynamically transform matched content within your notes. These functions are executed locally, directly in your Obsidian vault, and are never transmitted anywhere.
+
+However, executing arbitrary code — even if it looks innocent — can have unintended consequences. You have full control over what the plugin runs, which also means you take full responsibility for what it does. A simple typo can break your notes. A badly written loop can slow down your editor. And a malicious snippet (if ever copied from somewhere) could do far worse.
+
+So please — only run code that you fully understand.
+
+Auto Replacer offers you the power to automate and enhance your note-taking...
+But as a certain wise uncle once said:
+
+With great power comes great responsibility.
 
 ### 🌀 Infinite Loops
 
