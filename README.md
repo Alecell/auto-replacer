@@ -90,6 +90,17 @@ function transformNoteTitle(occurrence, editor, file) {
 
 ---
 
+## 🐉 Support the Plugin – Buy Me a Dragon
+
+Creating and maintaining this plugin takes time, research, and a lot of coffee (or should I say... dragons?).  
+If you found AutoReplacer useful and want to support its development, consider fueling it with a mythical boost!
+
+[![Buy Me a Dragon](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/alecell)
+
+Your support helps improve the plugin and means a lot 💛
+
+---
+
 ## 👥 Credits
 
 Created with ❤️ by Alecell. Special thanks to sailKite!
