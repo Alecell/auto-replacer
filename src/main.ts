@@ -8,7 +8,7 @@ export default class AutoReplacer extends Plugin {
 
 	onload = async () => {
 		const data = await this.loadData();
-		this.rules = data.rules || [];
+		this.rules = data?.rules || [];
 
 		const plugin = new AutoReplacerPlugin(this);
 		const settings = new AutoReplacerSettingsTab(this);
