@@ -89,7 +89,7 @@ export class AutoReplacerPlugin {
 		file: TFile
 	) => {
 		return inputString.replace(/{{(.*?)}}/g, (_, path) => {
-			const value = this.resolvePathFromEditor(path.trim(), editor, file);
+			const value = this.resolvePathTemplate(path.trim(), editor, file);
 
 			if (typeof value === "string") return value;
 			if (typeof value === "number") return value.toString();
@@ -102,7 +102,7 @@ export class AutoReplacerPlugin {
 		});
 	};
 
-	resolvePathFromEditor = (
+	resolvePathTemplate = (
 		path: string,
 		editor: Editor,
 		file: TFile

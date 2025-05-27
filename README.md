@@ -1,94 +1,98 @@
-# Obsidian Sample Plugin
+# 🪄 Auto Replacer – Obsidian Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Auto Replacer is a powerful plugin for [Obsidian](https://obsidian.md) that automatically replaces text in your notes based on custom rules using **regex** and **JavaScript**.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+Whether you want to format units, emphasize keywords, or inject smart context-aware replacements (like the note title), Auto Replacer gives you full control over text automation inside your vault.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+---
 
-## First time developing plugins?
+## 📦 Features
 
-Quick starting guide for new plugin devs:
+-   👀 Define your own **Regex patterns**
+-   🧠 Write **JavaScript transform functions** to control how matches are replaced
+-   💾 Rules are **saved and editable** via a visual UI
+-   🚫 Automatically avoids infinite loops or redundant replacements
+-   ✨ No need to edit markdown manually or click on a button, just type and Auto Replacer will do the rest
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+---
 
-## Releasing new releases
+## 🛠️ How it Works
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+Each rule consists of:
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+1. **Regex Pattern** – What you want to match (e.g., `\bkm\b`)
+2. **Transform Function** – How to replace it (e.g., `*kilometers*`)
+3. **Trigger** – Runs automatically on editor change, with debounce to prevent performance issues
 
-## Adding your plugin to the community plugin list
+Example:
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
+```js
+// Match the note title and make it bold
+function transformNoteTitle(occurrence, editor, file) {
+	const noteName = file?.basename;
+	if (!noteName) return occurrence.original;
+	return `**${noteName}**`;
 }
 ```
 
-If you have multiple URLs, you can also do:
+---
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+## 📋 Example Rules
 
-## API Documentation
+| Name               | Pattern                                  | Replace With   |     |     |     |     |     |
+| ------------------ | ---------------------------------------- | -------------- | --- | --- | --- | --- | --- |
+| Replace Note Title | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` | `**NoteName**` |     |     |     |     |     |
+| Bold Narym         | `(?<!\*\*)\bnarym\b(?!\*\*)`             | `**Narym**`    |     |     |     |     |     |
 
-See https://github.com/obsidianmd/obsidian-api
+---
+
+## 📘 How to Use
+
+1. Open **Settings → Auto Replacer**
+2. Click "Add Custom Rule"
+3. Fill out:
+
+    - `Rule Name`
+    - `Rule ID`
+    - `Regex Pattern` and Flags
+    - `Replacement Code` (in JavaScript)
+    - `Description` (optional)
+
+4. Save and type in any note — the rule applies automatically
+
+---
+
+## 🧠 Advanced Usage
+
+-   You can reference `editor` and `file` objects inside your transform code
+-   Use `{{file.basename}}` as a dynamic variable in regex patterns
+-   Debounce is automatically applied on `editor-change` for performance
+
+---
+
+## 🚨 Limitations & Considerations
+
+-   Avoid writing transform functions that return unchanged text since it may cause unnecessary loops
+-   Despite the fact that I tested it with book-size notes without problems, it also have a concern when we have too many patterns found on the same file without reasonable gaps between them, but since the word _hobbit_ is mentioned only 400 times on LOtR I _think_ it'll not be a problem.
+
+---
+
+## 📚 Documentation
+
+| Section          | Link                                             |
+| ---------------- | ------------------------------------------------ |
+| Plugin on GitHub | [🔗 GitHub Repo](https://github.com/your-repo)   |
+| FAQ              | [❓ FAQ](https://github.com/your-repo#faq)       |
+| Submit Issue     | [🐛 Report](https://github.com/your-repo/issues) |
+
+---
+
+## 👥 Credits
+
+Created with ❤️ by Alecell. Special thanks to sailKite!
+
+---
+
+## 📃 License
+
+MIT License © Alecell

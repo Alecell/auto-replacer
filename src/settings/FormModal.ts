@@ -23,7 +23,9 @@ export class RuleModal extends Modal {
 	onOpen = () => {
 		const { contentEl } = this;
 
-		contentEl.createEl("h2", { text: "Add your rule" });
+		contentEl.createEl("h2", {
+			text: this.formData ? "Edit your rule" : "Add your rule",
+		});
 
 		new RuleForm(
 			contentEl,

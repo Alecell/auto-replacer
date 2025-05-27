@@ -32,13 +32,19 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 			.addButton((cb) => {
 				cb.setButtonText("GitHub");
 				cb.onClick(() => {
-					window.open("LINK_TO_GITHUB", "_blank");
+					window.open(
+						"https://github.com/Alecell/auto-replacer",
+						"_blank"
+					);
 				});
 			})
 			.addButton((cb) => {
 				cb.setButtonText("Report issue");
 				cb.onClick(() => {
-					window.open("LINK_TO_GITHUB_ISSUES", "_blank");
+					window.open(
+						"https://github.com/Alecell/auto-replacer/issues/new",
+						"_blank"
+					);
 				});
 			});
 
