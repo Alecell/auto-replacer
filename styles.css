@@ -1,8 +1,19 @@
+.auto-replacer__list-container h3,
+.auto-replacer__list-container h4,
+.auto-replacer__list-container h5,
+.auto-replacer__list-container h6 {
+	margin: 0;
+}
+
+.auto-replacer__list-container h2 {
+	font-size: var(--h2-size);
+}
+
 .auto-replacer__rule-setting__rule {
 	margin-top: 15px;
 	padding: 15px 0;
 	border-top: 1px solid gray;
-	gap: 10px;
+	gap: 12px;
 	display: flex;
 	flex-direction: column;
 }
@@ -17,6 +28,20 @@
 	gap: 10px;
 }
 
+.auto-replacer__rule-setting__rule-regex-container {
+	display: flex;
+	gap: 10px;
+}
+
+.auto-replacer__rule-setting__rule-regex-container input:first-child {
+	width: 90%;
+}
+
+.auto-replacer__rule-setting__rule-regex-container input:last-child {
+	width: 10%;
+	flex: 0 1 auto;
+}
+
 .auto-replacer__rule-setting__rule-input {
 	flex: 1;
 	height: 30px;
@@ -25,4 +50,76 @@
 .auto-replacer__rule-setting__rule-textarea {
 	resize: vertical;
 	min-height: 144px;
+}
+
+.auto-replacer__rule-setting__add-rule-button {
+	float: right;
+}
+
+.auto-replacer__no-rules-message {
+	color: gray;
+	text-align: center;
+	margin-top: 55px;
+}
+
+.auto-replacer__rule-setting__rule-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.auto-replacer__rule-setting__rule-header h3 {
+	margin: 0;
+}
+
+.auto-replacer__rule-setting__rule-header span {
+	font-family: monospace;
+	color: gray;
+}
+
+.auto-replacer__rule-setting__rule-searches-for__regex {
+	display: flex;
+	gap: 10px;
+	font-family: monospace;
+}
+
+.auto-replacer__rule-setting__rule-searches-for__regex-pattern {
+	flex: 0 1 auto;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	min-width: 0;
+	color: #ffb86c;
+}
+
+.auto-replacer__rule-setting__rule-searches-for__regex-flags {
+	color: #50fa7b;
+}
+
+.auto-replacer__rule-setting__rule-what-it-does {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+.auto-replacer__rule-setting__rule-what-it-does__wrapper {
+	overflow: auto;
+}
+
+.auto-replacer__rule-setting__rule-what-it-does__code {
+	overflow: auto;
+}
+
+.auto-replacer__rule-setting__rule-what-it-does__code pre {
+	max-height: 144px;
+	overflow: auto;
+}
+
+.auto-replacer__rule-setting__rule-what-it-does__description p {
+	max-height: 144px;
+	overflow: auto;
+}
+
+.auto-replacer__rule-setting__rule-header__title-container {
+	display: flex;
+	gap: 10px;
 }

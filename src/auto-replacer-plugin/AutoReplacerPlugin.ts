@@ -1,82 +1,7 @@
 import { Editor, EditorChange, TFile } from "obsidian";
-import { normalize } from "path";
+import { normalize } from "../utils/normalize";
 import AutoReplacer from "src/main";
-import { Rule, MatchGroup, Occurrence } from "src/types";
-
-// Format Rules
-function transformNoteTitle(
-	occurrence: Occurrence,
-	editor: Editor,
-	file: TFile
-): string {
-	const noteName = file?.basename;
-
-	if (!noteName) return occurrence.original;
-
-	const lowercaseWords = [
-		// Português
-		"de",
-		"da",
-		"do",
-		"das",
-		"dos",
-		"e",
-		"em",
-		"com",
-		"sem",
-		"por",
-		"para",
-		"no",
-		"na",
-		"nos",
-		"nas",
-		"ao",
-		"aos",
-		"às",
-		// Inglês
-		"of",
-		"the",
-		"and",
-		"in",
-		"on",
-		"at",
-		"to",
-		"for",
-		"with",
-		"from",
-		"by",
-		"as",
-	];
-
-	const capitalized = noteName
-		.split(" ")
-		.map((word, i) => {
-			const isFirst = i === 0;
-			const lower = word.toLowerCase();
-
-			if (isFirst || !lowercaseWords.includes(lower)) {
-				return lower.charAt(0).toUpperCase() + lower.slice(1);
-			}
-
-			return lower;
-		})
-		.join(" ");
-
-	return `**${capitalized}**`;
-}
-
-// Obsidian Layer
-const rules: Rule[] = [
-	{
-		name: "Adjust Note Title",
-		key: "adjustNoteTitle",
-		regex: {
-			pattern: "(?<!\\*\\*)\\b{{file.basename}}\\b(?!\\*\\*)",
-			flags: "gi",
-		},
-		transform: transformNoteTitle,
-	},
-];
+import { Rule, MatchGroup, Match } from "src/types";
 
 export class AutoReplacerPlugin {
 	constructor(private plugin: AutoReplacer) {}
@@ -87,12 +12,17 @@ export class AutoReplacerPlugin {
 
 		if (!file) throw new Error("No active file found");
 
-		const matches = this.findRegexMatches(content, rules, editor, file);
+		const matches = this.findRegexMatches(
+			content,
+			this.plugin.rules,
+			editor,
+			file
+		);
 
 		if (Object.keys(matches).length > 0) {
 			const transforms = this.applyTransformsFromRules(
 				matches,
-				rules,
+				this.plugin.rules,
 				editor,
 				file
 			);
@@ -112,12 +42,12 @@ export class AutoReplacerPlugin {
 		rules: Rule[],
 		editor: Editor,
 		file: TFile
-	) => {
+	): MatchGroup => {
 		const result: MatchGroup = {};
 		const normalizedText = normalize(text);
 
 		for (const rule of rules) {
-			const matches = [];
+			const matches: Match[] = [];
 
 			const resolvedSource = this.resolveDynamicPlaceholders(
 				rule.regex.pattern,
@@ -126,10 +56,11 @@ export class AutoReplacerPlugin {
 			);
 			const regex = new RegExp(resolvedSource, rule.regex.flags);
 
-			let match;
-			while ((match = regex.exec(normalizedText)) !== null) {
+			for (const match of normalizedText.matchAll(regex)) {
+				if (typeof match.index !== "number") continue;
+
 				const startCaret = match.index;
-				const endCaret = regex.lastIndex;
+				const endCaret = startCaret + match[0].length;
 				const original = text.slice(startCaret, endCaret);
 				const normalized = normalizedText.slice(startCaret, endCaret);
 
@@ -189,11 +120,10 @@ export class AutoReplacerPlugin {
 			);
 		}
 
-		parts.shift(); // Remove o prefixo
+		parts.shift();
 
 		for (const part of parts) {
 			if (current && typeof current === "object" && part in current) {
-				// Faz cast seguro, pois acabamos de verificar com `in`
 				current = (current as Record<string, unknown>)[part];
 			} else {
 				return undefined;
@@ -213,13 +143,22 @@ export class AutoReplacerPlugin {
 
 		for (const key in matchesByKey) {
 			const rule = rules.find((r) => r.key === key);
-			if (!rule || typeof rule.transform !== "function") continue;
+			if (!rule) continue;
 
-			result[key] = matchesByKey[key].map(({ occurrence, ...rest }) => ({
-				...rest,
-				occurrence,
-				result: rule.transform(occurrence, editor, file),
-			}));
+			result[key] = matchesByKey[key].map(({ occurrence, ...rest }) => {
+				const fn = new Function(
+					"occurrence",
+					"editor",
+					"file",
+					`return (${rule.transform})(occurrence, editor, file)`
+				);
+
+				return {
+					...rest,
+					occurrence,
+					result: fn(occurrence, editor, file),
+				};
+			});
 		}
 
 		return result;

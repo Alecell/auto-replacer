@@ -1,73 +1,46 @@
-import { App, Modal, PluginSettingTab } from "obsidian";
+import { PluginSettingTab, setIcon, Setting } from "obsidian";
 import AutoReplacer from "src/main";
-import { Rule } from "src/types";
-
-const createRuleSetting = (ruleList: HTMLElement): void => {
-	const wrapper = ruleList.createEl("div", {
-		cls: "auto-replacer__rule-setting__rule",
-	});
-
-	const upperContainer = wrapper.createEl("div", {
-		cls: "auto-replacer__rule-setting__upper-container",
-	});
-	upperContainer.createEl("input", {
-		type: "text",
-		placeholder: "Rule Name",
-		cls: "auto-replacer__rule-setting__rule-input",
-	});
-
-	upperContainer.createEl("input", {
-		type: "text",
-		placeholder: "Rule ID",
-		cls: "auto-replacer__rule-setting__rule-input",
-	});
-
-	const bottomContainer = wrapper.createEl("div", {
-		cls: "auto-replacer__rule-setting__bottom-container",
-	});
-	bottomContainer.createEl("input", {
-		type: "text",
-		placeholder: "Regex Pattern",
-		cls: "auto-replacer__rule-setting__rule-input",
-	});
-
-	const textarea = bottomContainer.createEl("textarea", {
-		cls: "auto-replacer__rule-setting__rule-textarea",
-	});
-
-	textarea.setAttribute("placeholder", "Replacement Code");
-};
-export class RuleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		const { contentEl } = this;
-
-		contentEl.createEl("h2", { text: "Add your rule" });
-
-		createRuleSetting(contentEl);
-	}
-
-	onClose() {
-		const { contentEl } = this;
-		contentEl.empty(); // limpa o conteúdo ao fechar
-	}
-}
-
+import { RuleModal } from "./FormModal";
+import { ConfirmModal } from "./ConfirmationModal";
 export class AutoReplacerSettingsTab extends PluginSettingTab {
-	rules: Rule[];
 	modal: RuleModal;
 
-	constructor(plugin: AutoReplacer) {
+	constructor(private plugin: AutoReplacer) {
 		super(plugin.app, plugin);
+		this.modal = new RuleModal(plugin.app, this, plugin);
 	}
 
 	display = (): void => {
 		const { containerEl } = this;
-		// FAZER UM QUICK ACCESS NO TOPO IGUAL O META BIND COM DOCS, FAQ (QUE NAO TEM AINDA), GIUTHUB E REPORT ISSUE
 		containerEl.empty();
+
+		new Setting(containerEl)
+			.setName("Quick access")
+			.addButton((cb) => {
+				cb.setCta();
+				cb.setButtonText("Docs");
+				cb.onClick(() => {
+					window.open("LINK_TO_DOCS", "_blank");
+				});
+			})
+			.addButton((cb) => {
+				cb.setButtonText("Open FAQ");
+				cb.onClick(() => {
+					window.open("LINK_TO_FAQ", "_blank");
+				});
+			})
+			.addButton((cb) => {
+				cb.setButtonText("GitHub");
+				cb.onClick(() => {
+					window.open("LINK_TO_GITHUB", "_blank");
+				});
+			})
+			.addButton((cb) => {
+				cb.setButtonText("Report issue");
+				cb.onClick(() => {
+					window.open("LINK_TO_GITHUB_ISSUES", "_blank");
+				});
+			});
 
 		containerEl.createEl("h1", {
 			text: "Auto Replacer",
@@ -82,23 +55,117 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 			cls: "mod-cta",
 		});
 		addRuleButton.addEventListener("click", () => {
-			new RuleModal(this.app).open();
+			this.modal.open();
 		});
 
-		const ruleList = containerEl.createEl("div", {
-			cls: "auto-replacer__rule-list",
+		const listContainer = containerEl.createEl("div", {
+			cls: "auto-replacer__list-container",
 		});
 
-		ruleList.createEl("h2", {
+		listContainer.createEl("h2", {
 			text: "Custom Rules",
 		});
 
-		this.rules?.forEach((rule) => {
-			/**
-			 * colocar a parada em formato card com todas as informaçòes
-			 * os 2 botoeszinho de editar e remover
-			 * e tambem colocar o texto do codigo em pre tag
-			 */
+		listContainer.createEl("div", {
+			cls: "auto-replacer__list-container_rule-list",
 		});
+
+		this.renderRules();
+	};
+
+	renderRules = (): void => {
+		const ruleList = this.containerEl.querySelector(
+			".auto-replacer__list-container_rule-list"
+		);
+		ruleList?.empty();
+
+		if (ruleList && this.plugin.rules.length === 0) {
+			ruleList.createEl("p", {
+				text: "No custom rules defined yet. Click Add Custom Rule to create one.",
+				cls: "auto-replacer__no-rules-message",
+			});
+		}
+
+		if (ruleList) {
+			// faltou o remover e editar
+			this.plugin.rules?.forEach((rule) => {
+				const ruleItem = ruleList.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule",
+				});
+
+				const ruleHeader = ruleItem.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-header",
+				});
+				const titleContainer = ruleHeader.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-header__title-container",
+				});
+				titleContainer.createEl("h3", { text: rule.name });
+				const editButton = titleContainer.createEl("button", {
+					cls: "mod-cta",
+					text: "Edit",
+				});
+				const deleteButton = titleContainer.createEl("button", {
+					cls: "auto-replacer__rule-setting__rule-header__delete-button",
+					text: "Edit",
+				});
+				setIcon(deleteButton, "trash");
+				deleteButton.addEventListener("click", () => {
+					new ConfirmModal(this.plugin.app, rule.name, () => {
+						this.plugin.rules = this.plugin.rules.filter(
+							(r) => r.key !== rule.key
+						);
+						this.plugin.saveData({ rules: this.plugin.rules });
+						this.renderRules();
+					}).open();
+				});
+				setIcon(editButton, "pencil");
+				editButton.addEventListener("click", () => {
+					this.modal.setFormData(rule);
+					this.modal.open();
+				});
+				ruleHeader.createEl("span", {
+					text: `#${rule.key}`,
+				});
+
+				const searchesFor = ruleItem.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-searches-for",
+				});
+				searchesFor.createEl("h6", { text: "Searches for" });
+				const regexWrapper = searchesFor.createDiv(
+					"auto-replacer__rule-setting__rule-searches-for__regex"
+				);
+				regexWrapper.createEl("span", {
+					cls: "auto-replacer__rule-setting__rule-searches-for__regex-pattern",
+					text: rule.regex.pattern,
+				});
+				regexWrapper.createEl("span", {
+					text: rule.regex.flags,
+					cls: "auto-replacer__rule-setting__rule-searches-for__regex-flags",
+				});
+
+				const whatItDoes = ruleItem.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-what-it-does",
+				});
+				const preTitleWrapper = whatItDoes.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-what-it-does__wrapper",
+				});
+				preTitleWrapper.createEl("h6", { text: "Replace with" });
+				const preWrapper = preTitleWrapper.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-what-it-does__code",
+				});
+				preWrapper.createEl("pre", {
+					text: rule.transform,
+				});
+
+				const desc = whatItDoes.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-what-it-does__description",
+				});
+
+				desc.createEl("h6", { text: "What this rule does?" });
+				desc.createEl("p", {
+					text: rule.description || "No description provided.",
+				});
+			});
+		}
 	};
 }
