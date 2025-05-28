@@ -26,8 +26,8 @@ It is designed to be **powerful**, **flexible**, and **extensible**, letting you
     - A **regex pattern**
       - It can use the [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) as `file` and [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) as `editor` in the patterns.
     - Optional **flags** (defaults to `g`)
-    - A **JavaScript function** to transform each match
-      - It receives three parameters [`Match`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L7) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile)
+    - A **JavaScript function** to transform each occurrence
+      - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile)
     - A **description** for your rule to easier understand it
 
 2. The plugin listens for `editor-change` events.
@@ -45,14 +45,14 @@ The rule form includes:
 | **Rule ID**                | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
 | **Regex Pattern**          | Regex pattern without slashes. Supports groups.            |
 | **Regex Flags**            | Default is `g`, but you can use any combination            |
-| **Replacement Code**       | JavaScript function receiving `(match, editor, file)`      |
+| **Replacement Code**       | JavaScript function receiving `(occurrence, editor, file)`      |
 | **Description (Optional)** | Freeform text to explain the rule’s purpose                |
 
 ### Example Replacement Function
 
 ```js
-function(match, editor, file) {
-  return `**${match.original.toUpperCase()}**`
+function(occurrence, editor, file) {
+  return `**${occurrence.original.toUpperCase()}**`
 }
 ```
 
@@ -123,9 +123,9 @@ Malformed replacement code will be silently caught, but can break the replacemen
 **Function:**
 
 ```js
-function(match, editor, file) {
+function(occurrence, editor, file) {
   const noteName = file?.basename;
-  if (!noteName) return match.original;
+  if (!noteName) return occurrence.original;
   return `**${noteName}**`
 }
 ```
@@ -141,8 +141,8 @@ function(match, editor, file) {
 **Function:**
 
 ```js
-function(match) {
-  const [_, number, unit] = match.match;
+function(occurrence) {
+  const [_, number, unit] = occurrence.match;
   return `*${number} ${unit.toLowerCase()}*`;
 }
 ```
