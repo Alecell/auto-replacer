@@ -96,6 +96,17 @@ Malformed replacement code will be silently caught, but can break the replacemen
 
 ---
 
+🧠 Pro Tips & Common Pitfalls
+-   **It's easy to miss something when writing a rule:** While working on a new rule, create a test note to extensively test your logic before applying it to your actual notes (trust me — I learned this the hard way). Once your rule seems solid, copy the content of a real note into the test file and try again. Fine-tune the rule there before applying it across your vault.
+
+-   **Your regex should avoid already-formatted content:** If your regex doesn’t account for previously applied formatting, you might trigger formatting loops. For example, if you want to match a note title ({{file.basename}}) and wrap it with **, use a pattern like (?<!\*\*)\b{{file.basename}}\b(?!\*\*) to avoid matching titles that are already bolded.
+
+-   **You can debug your rule like any JavaScript code:** Since you're writing plain JavaScript, you can freely use console.log() or even debugger. Just open your developer console in Obsidian to inspect what's going on.
+
+-   **This plugin is meant for auto-formatting, not auto-completion:** Auto Replacer is designed to bring visual consistency to your notes through pattern-based text formatting — not to handle hundreds of consecutive substitutions like a snippet expansion tool. Use it with moderation and intention.
+
+---
+
 ## 💡 Examples
 
 ### 1. Highlight Note Title
@@ -156,7 +167,7 @@ This appears to be linked to how many elements are **rendered simultaneously** o
 
 ---
 
-## 🧠 Under the Hood
+## 🔭 Under the Hood
 
 -   Uses a **normalized** version of the text for pattern matching (stripped diacritics)
 -   Applies changes using `editor.transaction()`
