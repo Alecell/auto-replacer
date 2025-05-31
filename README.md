@@ -11,7 +11,6 @@ Whether you want to format units, emphasize keywords, or inject smart context-aw
 -   👀 Define your own **Regex patterns**
 -   🧠 Write **JavaScript transform functions** to control how matches are replaced
 -   💾 Rules are **saved and editable** via a visual UI
--   🚫 Automatically avoids infinite loops or redundant replacements
 -   ✨ No need to edit markdown manually or click on a button, just type and Auto Replacer will do the rest
 
 ---
