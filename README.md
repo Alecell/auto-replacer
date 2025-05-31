@@ -44,7 +44,6 @@ function transformNoteTitle(occurrence, editor, file) {
 | Bold Narym            | `(?<!\*\*)\bnarym\b(?!\*\*)`                | `**Narym**`          |
 | Strike Temperature    | `\b\d+(?:\.\d+)?\s\*(?:°C\|C\|celsius)\b`   | eg: `~~26°C~~`       |
 | Emphasize Measurement | `\b\d+(?:\.\d+)?\s\*(?:km\|mi\|kg\|g\|m)\b` | eg: `*49km*`         |
-| Fix Double Spaces     | ` {2,}`                                     | `' '` (single space) |
 
 ---
 
