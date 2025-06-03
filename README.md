@@ -38,12 +38,12 @@ function transformNoteTitle(occurrence, editor, file) {
 
 ## 📋 Example Rules
 
-| Name                  | Pattern                                     | Replace With         |
-| --------------------- | ------------------------------------------- | -------------------- |
-| Replace Note Title    | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)`    | `**NoteName**`       |
-| Bold Narym            | `(?<!\*\*)\bnarym\b(?!\*\*)`                | `**Narym**`          |
-| Strike Temperature    | `\b\d+(?:\.\d+)?\s\*(?:°C\|C\|celsius)\b`   | eg: `~~26°C~~`       |
-| Emphasize Measurement | `\b\d+(?:\.\d+)?\s\*(?:km\|mi\|kg\|g\|m)\b` | eg: `*49km*`         |
+| Name                  | Text | Pattern                                     | Replace With         |
+| --------------------- | ---- | ------------------------------------------- | -------------------- |
+| Replace Note Title    | world of pados | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` | `**World of Pados**` |
+| Replace Comma Decimal | 27,6 | `\b\d+,\d+\b`                | `27.6` |
+| Replace Fahrenheit    | 64.4 °F | `\b\d+(\.\d+)?\s?°?\s?F\b`   | `18 °C` |
+| Emphasize Measurement | 49 km | `\b\d+(?:\.\d+)?\s\*(?:km\|mi\|kg\|g\|m)\b` | `*49 km*` |
 
 ---
 
