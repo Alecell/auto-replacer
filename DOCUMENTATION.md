@@ -19,19 +19,21 @@ It is designed to be **powerful**, **flexible**, and **extensible**, letting you
 
 ## ⚙️ How It Works
 
-1. You define a **rule** with:
+1.  You define a **rule** with:
 
-    - A **name**
-    - A **unique ID**
-    - A **regex pattern**
-      - It can use the [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) as `file` and [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) as `editor` in the patterns.
-    - Optional **flags** (defaults to `g`)
-    - A **JavaScript function** to transform each occurrence
-      - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile)
-    - A **description** for your rule to easier understand it
+        - A **name**
+        - A **unique ID**
+        - A **regex pattern**
+          - It can use the [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) as `file` and [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) as `editor` in the patterns.
+        - Optional **flags** (defaults to `g`)
 
-2. The plugin listens for `editor-change` events.
-3. On change, the entire note is normalized, all rules are tested, and any matches are replaced using your transform code.
+    <<<<<<< HEAD - A **JavaScript function** to transform each occurrence - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) - A **description** for your rule to easier understand it
+    ======= - A **JavaScript function** to transform each match - A **Description** to easy understand what the rule does
+
+    > > > > > > > update manifest
+
+2.  The plugin listens for `editor-change` events.
+3.  On change, the entire note is normalized, all rules are tested, and any matches are replaced using your transform code.
 
 ---
 
@@ -45,7 +47,7 @@ The rule form includes:
 | **Rule ID**                | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
 | **Regex Pattern**          | Regex pattern without slashes. Supports groups.            |
 | **Regex Flags**            | Default is `g`, but you can use any combination            |
-| **Replacement Code**       | JavaScript function receiving `(occurrence, editor, file)`      |
+| **Replacement Code**       | JavaScript function receiving `(occurrence, editor, file)` |
 | **Description (Optional)** | Freeform text to explain the rule’s purpose                |
 
 ### Example Replacement Function
@@ -72,7 +74,9 @@ No escaping is needed. Just write it as-is.
 ---
 
 ## ⚠️ Warnings & Limitations
+
 ### 🛑 Only Run Code You Understand
+
 The Auto Replacer plugin allows you to write and execute custom JavaScript functions to dynamically transform matched content within your notes. These functions are executed locally, directly in your Obsidian vault, and are never transmitted anywhere.
 
 However, executing arbitrary code — even if it looks innocent — can have unintended consequences. You have full control over what the plugin runs, which also means you take full responsibility for what it does. A simple typo can break your notes. A badly written loop can slow down your editor. And a malicious snippet (if ever copied from somewhere) could do far worse.
@@ -100,6 +104,7 @@ Malformed replacement code will be silently caught, but can break the replacemen
 ---
 
 ## 🧠 Pro Tips & Common Pitfalls
+
 -   **It's easy to miss something when writing a rule:** While working on a new rule, create a test note to extensively test your logic before applying it to your actual notes (trust me — I learned this the hard way). Once your rule seems solid, copy the content of a real note into the test file and try again. Fine-tune the rule there before applying it across your vault.
 
 -   **Your regex should avoid already-formatted content:** If your regex doesn’t account for previously applied formatting, you might trigger formatting loops. For example, if you want to match a note title `({{file.basename}})` and wrap it with `**`, use a pattern like `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` to avoid matching titles that are already bolded.
