@@ -19,21 +19,19 @@ It is designed to be **powerful**, **flexible**, and **extensible**, letting you
 
 ## ⚙️ How It Works
 
-1.  You define a **rule** with:
+1. You define a **rule** with:
 
-        - A **name**
-        - A **unique ID**
-        - A **regex pattern**
-          - It can use the [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) as `file` and [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) as `editor` in the patterns.
-        - Optional **flags** (defaults to `g`)
+    - A **name**
+    - A **unique ID**
+    - A **regex pattern**
+        - It can use the [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) as `file` and [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) as `editor` in the patterns.
+    - Optional **flags** (defaults to `g`)
+    - A **JavaScript function** to transform each occurrence
+        - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile)
+    - A **description** for your rule to easier understand it
 
-    <<<<<<< HEAD - A **JavaScript function** to transform each occurrence - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile) - A **description** for your rule to easier understand it
-    ======= - A **JavaScript function** to transform each match - A **Description** to easy understand what the rule does
-
-    > > > > > > > update manifest
-
-2.  The plugin listens for `editor-change` events.
-3.  On change, the entire note is normalized, all rules are tested, and any matches are replaced using your transform code.
+2. The plugin listens for `editor-change` events.
+3. On change, the entire note is normalized, all rules are tested, and any matches are replaced using your transform code.
 
 ---
 
