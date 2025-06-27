@@ -1,8 +1,8 @@
 # 🪄 Auto Replacer – Obsidian Plugin
 
-Auto Replacer is a powerful plugin for [Obsidian](https://obsidian.md) that automatically replaces text in your notes based on custom rules using **regex** and **JavaScript**.
+Auto Replacer is a powerful plugin for [Obsidian](https://obsidian.md) that automatically replaces text in your notes using custom rules powered by **regex** and **JavaScript**.
 
-Whether you want to format units, emphasize keywords, or inject smart context-aware replacements (like the note title), Auto Replacer gives you full control over text automation inside your vault.
+Whether you want to format units, highlight keywords, or inject smart, context-aware replacements like the note title, Auto Replacer gives you full control over text automation in your vault.
 
 ---
 
@@ -38,12 +38,12 @@ function transformNoteTitle(occurrence, editor, file) {
 
 ## 📋 Example Rules
 
-| Name                  | Text | Pattern                                     | Replace With         |
-| --------------------- | ---- | ------------------------------------------- | -------------------- |
-| Replace Note Title    | world of pados | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)` | `**World of Pados**` |
-| Replace Comma Decimal | 27,6 | `\b\d+,\d+\b`                | `27.6` |
-| Replace Fahrenheit    | 64.4 °F | `\b\d+(\.\d+)?\s?°?\s?F\b`   | `18 °C` |
-| Emphasize Measurement | 49 km | `\b\d+(?:\.\d+)?\s\*(?:km\|mi\|kg\|g\|m)\b` | `*49 km*` |
+| Name                  | Text           | Pattern                                     | Replace With         |
+| --------------------- | -------------- | ------------------------------------------- | -------------------- |
+| Replace Note Title    | world of pados | `(?<!\*\*)\b{{file.basename}}\b(?!\*\*)`    | `**World of Pados**` |
+| Replace Comma Decimal | 27,6           | `\b\d+,\d+\b`                               | `27.6`               |
+| Replace Fahrenheit    | 64.4 °F        | `\b\d+(\.\d+)?\s?°?\s?F\b`                  | `18 °C`              |
+| Emphasize Measurement | 49 km          | `\b\d+(?:\.\d+)?\s\*(?:km\|mi\|kg\|g\|m)\b` | `*49 km*`            |
 
 ---
 
@@ -77,6 +77,7 @@ function transformNoteTitle(occurrence, editor, file) {
 -   Despite the fact that I tested it with book-size notes without problems, it also have a concern when we have too many patterns found on the same file without reasonable gaps between them, but since the word _hobbit_ is mentioned only 400 times on LOtR I _think_ it'll not be a problem.
 
 #### 🛑 Only Run Code You Understand
+
 The Auto Replacer plugin allows you to write and execute custom JavaScript functions to dynamically transform matched content within your notes. These functions are executed locally, directly in your Obsidian vault, and are never transmitted anywhere.
 
 However, executing arbitrary code — even if it looks innocent — can have unintended consequences. You have full control over what the plugin runs, which also means you take full responsibility for what it does. A simple typo can break your notes. A badly written loop can slow down your editor. And a malicious snippet (if ever copied from somewhere) could do far worse.

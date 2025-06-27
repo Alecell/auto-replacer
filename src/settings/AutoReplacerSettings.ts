@@ -45,12 +45,8 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 				});
 			});
 
-		containerEl.createEl("h1", {
-			text: "Auto Replacer",
-		});
-
 		containerEl.createEl("p", {
-			text: "This plugin automatically replaces text in your notes based on defined rules.",
+			text: "This plugin automatically replaces text in your notes using custom regex rules and JavaScript. Use it to format, correct, or transform content in real time while writing.",
 		});
 
 		const addRuleButton = containerEl.createEl("button", {

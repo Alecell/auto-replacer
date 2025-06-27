@@ -1,7 +1,7 @@
 {
 	"name": "auto-replacer",
 	"version": "1.0.0",
-	"description": "A live text replacement plugin for Obsidian that applies automatic formatting, corrections, or custom replacements in real-time. Define your own regex-based rules and transformation logic to modify text dynamically as you type.",
+	"description": "Automatically replace text in Obsidian using regex-based rules and JavaScript transformations. Supports dynamic formatting, smart corrections, and context-aware replacements in real time.",
 	"main": "src/main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

@@ -3,7 +3,7 @@
 	"name": "Auto Replacer",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A live text replacement plugin that applies automatic formatting, corrections, or custom replacements in real-time.",
+	"description": "Replace text in your notes automatically using regex rules and JavaScript functions. Apply custom formatting, corrections, or dynamic replacements as you type.",
 	"author": "Alecell",
 	"authorUrl": "https://github.com/Alecell",
 	"fundingUrl": "https://buymeacoffee.com/alecell",
