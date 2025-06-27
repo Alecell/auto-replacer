@@ -15,9 +15,11 @@ export default class AutoReplacer extends Plugin {
 
 		this.addSettingTab(settings);
 
-		this.app.workspace.on(
-			"editor-change",
-			debounce(plugin.findAndReplace, 300)
+		this.registerEvent(
+			this.app.workspace.on(
+				"editor-change",
+				debounce(plugin.findAndReplace, 300)
+			)
 		);
 	};
 }
