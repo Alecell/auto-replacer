@@ -41,11 +41,11 @@ The rule form includes:
 
 | Field                      | Description                                                |
 | -------------------------- | ---------------------------------------------------------- |
-| **Rule Name**              | A descriptive name (used in the UI)                        |
+| **Rule name**              | A descriptive name (used in the UI)                        |
 | **Rule ID**                | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
-| **Regex Pattern**          | Regex pattern without slashes. Supports groups.            |
+| **Regex pattern**          | Regex pattern without slashes. Supports groups.            |
 | **Regex Flags**            | Default is `g`, but you can use any combination            |
-| **Replacement Code**       | JavaScript function receiving `(occurrence, editor, file)` |
+| **Replacement code**       | JavaScript function receiving `(occurrence, editor, file)` |
 | **Description (Optional)** | Freeform text to explain the rule’s purpose                |
 
 ### Example Replacement Function

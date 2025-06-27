@@ -50,7 +50,7 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 		});
 
 		const addRuleButton = containerEl.createEl("button", {
-			text: "Add Custom Rule",
+			text: "Add custom rule",
 			cls: "mod-cta",
 		});
 		addRuleButton.addEventListener("click", () => {
@@ -62,7 +62,7 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 		});
 
 		listContainer.createEl("h2", {
-			text: "Custom Rules",
+			text: "Custom rules",
 		});
 
 		listContainer.createEl("div", {
@@ -80,7 +80,7 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 
 		if (ruleList && this.plugin.rules.length === 0) {
 			ruleList.createEl("p", {
-				text: "No custom rules defined yet. Click Add Custom Rule to create one.",
+				text: "No custom rules defined yet. Click Add custom rule to create one.",
 				cls: "auto-replacer__no-rules-message",
 			});
 		}

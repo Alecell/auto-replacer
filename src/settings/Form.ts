@@ -140,7 +140,7 @@ export class RuleForm {
 
 		upperContainer.createEl("input", {
 			type: "text",
-			placeholder: "Rule Name",
+			placeholder: "Rule name",
 			cls: "auto-replacer__rule-setting__rule-input",
 			value: formData?.name || "",
 			attr: {
@@ -174,7 +174,7 @@ export class RuleForm {
 
 		regexContainer.createEl("input", {
 			type: "text",
-			placeholder: "Regex Pattern",
+			placeholder: "Regex pattern",
 			cls: "auto-replacer__rule-setting__rule-input",
 			value: formData?.regex?.pattern || "",
 			attr: {
@@ -198,7 +198,7 @@ export class RuleForm {
 		const codeTextarea = bottomContainer.createEl("textarea", {
 			cls: "auto-replacer__rule-setting__rule-textarea",
 			attr: {
-				placeholder: "Replacement Code",
+				placeholder: "Replacement code",
 				name: "replacementCode",
 				required: true,
 				title: "Enter the replacement javascript code here. You can use {{variable}} syntax for dynamic variables.",

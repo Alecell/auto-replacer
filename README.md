@@ -50,13 +50,13 @@ function transformNoteTitle(occurrence, editor, file) {
 ## 📘 How to Use
 
 1. Open **Settings → Auto Replacer**
-2. Click "Add Custom Rule"
+2. Click "Add custom rule"
 3. Fill out:
 
-    - `Rule Name`
+    - `Rule name`
     - `Rule ID`
-    - `Regex Pattern` and Flags
-    - `Replacement Code` (in JavaScript)
+    - `Regex pattern` and Flags
+    - `Replacement code` (in JavaScript)
     - `Description` (optional)
 
 4. Save and type in any note — the rule applies automatically

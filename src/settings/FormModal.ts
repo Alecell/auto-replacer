@@ -35,7 +35,7 @@ export class RuleModal extends Modal {
 		);
 
 		const submitButton = contentEl.createEl("button", {
-			text: this.formData ? "Save Rule Changes" : "Add Rule",
+			text: this.formData ? "Save rule changes" : "Add rule",
 			cls: "mod-cta auto-replacer__rule-setting__add-rule-button",
 		});
 		submitButton.setAttribute("type", "submit");
