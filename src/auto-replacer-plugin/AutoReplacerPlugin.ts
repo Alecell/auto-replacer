@@ -218,7 +218,7 @@ export class AutoReplacerPlugin {
 
 	private getTildeBlockRanges = (text: string): IgnoredRange[] => {
 		const ranges: IgnoredRange[] = [];
-		const tildeBlockRegex = /~~~[\s\S]*?~~~/g;
+		const tildeBlockRegex = /^~~~[^\n]*\n[\s\S]*?\n~~~\s*$/gm;
 		let match;
 		
 		while ((match = tildeBlockRegex.exec(text)) !== null) {
@@ -233,7 +233,7 @@ export class AutoReplacerPlugin {
 
 	private getBackQuoteRanges = (text: string): IgnoredRange[] => {
 		const ranges: IgnoredRange[] = [];
-		const backQuoteBlockRegex = /```[\s\S]*?```/g;
+		const backQuoteBlockRegex = /^```[^\n]*\n[\s\S]*?\n```\s*$/gm;
 		let match;
 		
 		while ((match = backQuoteBlockRegex.exec(text)) !== null) {
@@ -242,7 +242,7 @@ export class AutoReplacerPlugin {
 				end: match.index + match[0].length
 			});
 		}
-		
+
 		return ranges;
 	};
 
@@ -257,7 +257,7 @@ export class AutoReplacerPlugin {
 				end: match.index + match[0].length
 			});
 		}
-		
+
 		return ranges;
 	};
 
