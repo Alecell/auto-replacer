@@ -1,6 +1,17 @@
 # 📚 Auto Replacer — Documentation
 
-Auto Replacer is a plugin for [Obsidian](https://obsidian.md/) that allows you to automatically replace text inside your notes using custom **regex patterns** and **JavaScript transform functions**.
+Aut| Field                          | Description                                                |
+| ------------------------------ | ---------------------------------------------------------- |
+| **Rule name**                  | A descriptive name (used in the UI)                        |
+| **Rule ID**                    | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
+| **Regex pattern**              | Regex pattern without slashes. Supports groups.            |
+| **Regex Flags**                | Default is `g`, but you can use any combination            |
+| **Replacement code**           | JavaScript function receiving `(occurrence, editor, file)` |
+| **Ignore frontmatter**         | Skip matches inside YAML frontmatter blocks (`---`)       |
+| **Ignore tilde blocks**        | Skip matches inside tilde code blocks (`~~~`)             |
+| **Ignore back quote blocks**   | Skip matches inside backtick code blocks (``` ` ```)         |
+| **Ignore titles**              | Skip matches inside markdown titles (`#`, `##`, etc.)     |
+| **Description (Optional)**     | Freeform text to explain the rule's purpose                |er is a plugin for [Obsidian](https://obsidian.md/) that allows you to automatically replace text inside your notes using custom **regex patterns** and **JavaScript transform functions**.
 
 It is designed to be **powerful**, **flexible**, and **extensible**, letting you define formatting rules and apply them in real time as you type.
 
@@ -68,6 +79,21 @@ You can use dynamic references inside regex with double curly braces, like:
 -   `{{editor.lineCount()}}`
 
 No escaping is needed. Just write it as-is.
+
+---
+
+## 🚫 Ignore Options
+
+Auto Replacer allows you to **selectively ignore** certain parts of your markdown documents where you don't want rules to be applied. This prevents unwanted formatting in code blocks, frontmatter, and other structured content.
+
+### Available Ignore Options
+
+| Option                     | Description                                    | Example                           |
+| -------------------------- | ---------------------------------------------- | --------------------------------- |
+| **Ignore frontmatter**    | Skips YAML frontmatter blocks                 | `---`<br>`title: My Note`<br>`---` |
+| **Ignore tilde blocks**   | Skips tilde code blocks                       | `~~~python`<br>`print("hello")`<br>`~~~` |
+| **Ignore back quote blocks** | Skips backtick code blocks                 | ``` ` ` `js ```<br>`console.log("hi")`<br>` ``` `  |
+| **Ignore titles**         | Skips markdown headings                       | `# Title`, `## Subtitle`, etc.    |
 
 ---
 
