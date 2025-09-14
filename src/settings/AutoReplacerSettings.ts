@@ -86,7 +86,6 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 		}
 
 		if (ruleList) {
-			// faltou o remover e editar
 			this.plugin.rules?.forEach((rule) => {
 				const ruleItem = ruleList.createEl("div", {
 					cls: "auto-replacer__rule-setting__rule",

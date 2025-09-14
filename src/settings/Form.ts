@@ -29,6 +29,9 @@ export class RuleForm {
 			regexPattern: HTMLInputElement;
 			regexFlags?: HTMLInputElement;
 			replacementCode: HTMLTextAreaElement;
+			ignoreFrontmatter?: HTMLInputElement;
+			ignoreTildeBlocks?: HTMLInputElement;
+			ignoreBackQuoteBlocks?: HTMLInputElement;
 		};
 
 		const errors: string[] = [];
@@ -98,6 +101,10 @@ export class RuleForm {
 				replacementCode: HTMLTextAreaElement;
 				description?: HTMLTextAreaElement;
 				regexFlags?: HTMLInputElement;
+				ignoreFrontmatter?: HTMLInputElement;
+				ignoreTildeBlocks?: HTMLInputElement;
+				ignoreBackQuoteBlocks?: HTMLInputElement;
+				ignoreTitles?: HTMLInputElement;
 			};
 
 			const newRule = {
@@ -109,6 +116,10 @@ export class RuleForm {
 					flags: fields.regexFlags?.value?.trim() || "g",
 				},
 				transform: fields.replacementCode.value.trim(),
+				ignoreFrontmatter: fields.ignoreFrontmatter?.checked,
+				ignoreTildeBlocks: fields.ignoreTildeBlocks?.checked,
+				ignoreBackQuoteBlocks: fields.ignoreBackQuoteBlocks?.checked,
+				ignoreTitles: fields.ignoreTitles?.checked,
 			};
 
 			if (this.formData) {
@@ -205,6 +216,75 @@ export class RuleForm {
 			},
 		});
 		codeTextarea.value = formData?.transform || "";
+
+		const checkboxContainer = bottomContainer.createEl("div", {
+			cls: "auto-replacer__rule-setting__checkbox-container",
+		});
+
+		const frontmatterCheckboxContainer = checkboxContainer.createEl(
+			"label",
+			{
+				cls: "auto-replacer__rule-setting__checkbox-label",
+			}
+		);
+		const frontmatterCheckbox = frontmatterCheckboxContainer.createEl("input", {
+			type: "checkbox",
+			cls: "auto-replacer__rule-setting__checkbox",
+			attr: {
+				name: "ignoreFrontmatter",
+			},
+		});
+		frontmatterCheckbox.checked = formData?.ignoreFrontmatter || false;
+		frontmatterCheckboxContainer.createEl("span", {
+			text: "Ignore frontmatter",
+		});
+
+		const tildeCheckboxContainer = checkboxContainer.createEl("label", {
+			cls: "auto-replacer__rule-setting__checkbox-label",
+		});
+		const tildeCheckbox = tildeCheckboxContainer.createEl("input", {
+			type: "checkbox",
+			cls: "auto-replacer__rule-setting__checkbox",
+			attr: {
+				name: "ignoreTildeBlocks",
+			},
+		});
+		tildeCheckbox.checked = formData?.ignoreTildeBlocks || false;
+		tildeCheckboxContainer.createEl("span", {
+			text: "Ignore tilde blocks",
+		});
+
+		// Checkbox para Ignore back quote blocks
+		const backQuoteCheckboxContainer = checkboxContainer.createEl("label", {
+			cls: "auto-replacer__rule-setting__checkbox-label",
+		});
+		const backQuoteCheckbox = backQuoteCheckboxContainer.createEl("input", {
+			type: "checkbox",
+			cls: "auto-replacer__rule-setting__checkbox",
+			attr: {
+				name: "ignoreBackQuoteBlocks",
+			},
+		});
+		backQuoteCheckbox.checked = formData?.ignoreBackQuoteBlocks || false;
+		backQuoteCheckboxContainer.createEl("span", {
+			text: "Ignore back quote blocks",
+		});
+
+		// Checkbox para Ignore titles
+		const titlesCheckboxContainer = checkboxContainer.createEl("label", {
+			cls: "auto-replacer__rule-setting__checkbox-label",
+		});
+		const titlesCheckbox = titlesCheckboxContainer.createEl("input", {
+			type: "checkbox",
+			cls: "auto-replacer__rule-setting__checkbox",
+			attr: {
+				name: "ignoreTitles",
+			},
+		});
+		titlesCheckbox.checked = formData?.ignoreTitles || false;
+		titlesCheckboxContainer.createEl("span", {
+			text: "Ignore titles",
+		});
 
 		const descTextarea = bottomContainer.createEl("textarea", {
 			cls: "auto-replacer__rule-setting__rule-textarea",

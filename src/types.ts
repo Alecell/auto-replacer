@@ -1,5 +1,5 @@
 export interface Occurrence {
-	match: RegExpExecArray;
+	match: RegExpMatchArray;
 	original: string;
 	normalized: string;
 }
@@ -23,6 +23,10 @@ export interface Rule {
 		pattern: string;
 		flags: string;
 	};
+	ignoreFrontmatter?: boolean;
+	ignoreTildeBlocks?: boolean;
+	ignoreBackQuoteBlocks?: boolean;
+	ignoreTitles?: boolean;
 	/**
 	 * @type {transform}
 	 * @param {match} Match
@@ -42,4 +46,16 @@ export interface Rule {
 	 * ```
 	 */
 	transform: string;
+}
+
+export interface IgnoredRange {
+	start: number;
+	end: number;
+}
+
+export interface IgnoredRanges {
+	frontmatter: IgnoredRange[];
+	tildeBlocks: IgnoredRange[];
+	backQuoteBlocks: IgnoredRange[];
+	titles: IgnoredRange[];
 }

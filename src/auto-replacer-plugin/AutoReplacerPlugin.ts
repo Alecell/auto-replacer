@@ -1,7 +1,9 @@
 import { Editor, EditorChange, TFile } from "obsidian";
 import { normalize } from "../utils/normalize";
 import AutoReplacer from "src/main";
-import { Rule, MatchGroup, Match } from "src/types";
+import { Rule, MatchGroup, Match, IgnoredRange, IgnoredRanges } from "src/types";
+
+
 
 export class AutoReplacerPlugin {
 	constructor(private plugin: AutoReplacer) {}
@@ -11,7 +13,6 @@ export class AutoReplacerPlugin {
 		const file = this.plugin.app.workspace.getActiveFile();
 
 		if (!file) throw new Error("No active file found");
-
 		const matches = this.findRegexMatches(
 			content,
 			this.plugin.rules,
@@ -48,7 +49,7 @@ export class AutoReplacerPlugin {
 
 		for (const rule of rules) {
 			const matches: Match[] = [];
-
+			const ignoredRanges = this.calculateIgnoredRanges(text, rule);
 			const resolvedSource = this.resolveDynamicPlaceholders(
 				rule.regex.pattern,
 				editor,
@@ -61,6 +62,12 @@ export class AutoReplacerPlugin {
 
 				const startCaret = match.index;
 				const endCaret = startCaret + match[0].length;
+				const matchLength = match[0].length;
+
+				if (this.isInIgnoredRange(startCaret, matchLength, ignoredRanges)) {
+					continue;
+				}
+
 				const original = text.slice(startCaret, endCaret);
 				const normalized = normalizedText.slice(startCaret, endCaret);
 
@@ -183,5 +190,94 @@ export class AutoReplacerPlugin {
 		}
 
 		return changes;
+	};
+
+	private calculateIgnoredRanges = (text: string, rule: Rule): IgnoredRanges => {
+		return {
+			frontmatter: rule.ignoreFrontmatter ? this.getFrontmatterRanges(text) : [],
+			tildeBlocks: rule.ignoreTildeBlocks ? this.getTildeBlockRanges(text) : [],
+			backQuoteBlocks: rule.ignoreBackQuoteBlocks ? this.getBackQuoteRanges(text) : [],
+			titles: rule.ignoreTitles ? this.getTitleRanges(text) : []
+		};
+	};
+
+	private getFrontmatterRanges = (text: string): IgnoredRange[] => {
+		const ranges: IgnoredRange[] = [];
+		const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*$/m;
+		const match = text.match(frontmatterRegex);
+		
+		if (match && match.index !== undefined) {
+			ranges.push({
+				start: match.index,
+				end: match.index + match[0].length
+			});
+		}
+		
+		return ranges;
+	};
+
+	private getTildeBlockRanges = (text: string): IgnoredRange[] => {
+		const ranges: IgnoredRange[] = [];
+		const tildeBlockRegex = /~~~[\s\S]*?~~~/g;
+		let match;
+		
+		while ((match = tildeBlockRegex.exec(text)) !== null) {
+			ranges.push({
+				start: match.index,
+				end: match.index + match[0].length
+			});
+		}
+		
+		return ranges;
+	};
+
+	private getBackQuoteRanges = (text: string): IgnoredRange[] => {
+		const ranges: IgnoredRange[] = [];
+		const backQuoteBlockRegex = /```[\s\S]*?```/g;
+		let match;
+		
+		while ((match = backQuoteBlockRegex.exec(text)) !== null) {
+			ranges.push({
+				start: match.index,
+				end: match.index + match[0].length
+			});
+		}
+		
+		return ranges;
+	};
+
+	private getTitleRanges = (text: string): IgnoredRange[] => {
+		const ranges: IgnoredRange[] = [];
+		const titleRegex = /^(#{1,6}\s+.*?)$/gm;
+		let match;
+		
+		while ((match = titleRegex.exec(text)) !== null) {
+			ranges.push({
+				start: match.index,
+				end: match.index + match[0].length
+			});
+		}
+		
+		return ranges;
+	};
+
+	private isInIgnoredRange = (position: number, length: number, ignoredRanges: IgnoredRanges): boolean => {
+		const matchStart = position;
+		const matchEnd = position + length;
+		
+		const allRanges = [
+			...ignoredRanges.frontmatter,
+			...ignoredRanges.tildeBlocks,
+			...ignoredRanges.backQuoteBlocks,
+			...ignoredRanges.titles
+		];
+		
+		for (const range of allRanges) {
+			if (matchStart >= range.start && matchEnd <= range.end) {
+				return true;
+			}
+		}
+		
+		return false;
 	};
 }
