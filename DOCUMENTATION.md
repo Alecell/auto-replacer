@@ -1,6 +1,6 @@
 # 📚 Auto Replacer — Documentation
 
-Aut| Field                          | Description                                                |
+| Field                          | Description                                                |
 | ------------------------------ | ---------------------------------------------------------- |
 | **Rule name**                  | A descriptive name (used in the UI)                        |
 | **Rule ID**                    | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
@@ -230,3 +230,4 @@ Your support helps improve the plugin and means a lot 💛
 ## 📄 License
 
 MIT License © Alecell
+
