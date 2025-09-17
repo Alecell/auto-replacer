@@ -1,5 +1,5 @@
-// Constante para referência à regra principal no frontmatter
 export const MAIN_RULE_PLACEHOLDER = "{{mainRule}}";
+export const FRONTMATTER_STRING_PLACEHOLDER = "{{frontmatterString}}";
 
 export interface Occurrence {
 	match: RegExpMatchArray;
@@ -69,6 +69,7 @@ export interface FrontmatterRuleConfig {
 }
 
 export interface ProcessedRule extends Rule {
-	patterns?: RegExp[];  // Padrões processados do frontmatter
-	enabled?: boolean;    // Se a regra está habilitada para este arquivo
+	patterns?: RegExp[];        // Padrões regex processados do frontmatter
+	frontmatterStrings?: string[];  // Strings literais do frontmatter para usar com {{frontmatterString}}
+	enabled?: boolean;          // Se a regra está habilitada para este arquivo
 }
