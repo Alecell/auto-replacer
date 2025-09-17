@@ -20,6 +20,9 @@ It is designed to be **powerful**, **flexible**, and **extensible**, letting you
 ## 🔧 Features
 
 -   Custom regex-based matching
+-   Rule overrides using frontmatter
+-   Advanced rule templating
+-   Selective content ignoring (frontmatter, code blocks, titles)
 -   Dynamic placeholders like `{{file.basename}}`, `{{editor.cursor}}`, etc.
 -   Real-time transformations using JS functions
 -   Visual rule management UI
@@ -41,7 +44,7 @@ It is designed to be **powerful**, **flexible**, and **extensible**, letting you
         - It receives three parameters [`Occurrence`](https://github.com/Alecell/auto-replacer/blob/6b0b08daedf8c575bf653b4eab72653517e61b73/src/types.ts#L1) that follows a internal plugin interface, [`Editor`](https://docs.obsidian.md/Reference/TypeScript+API/Editor) and [`TFile`](https://docs.obsidian.md/Reference/TypeScript+API/TFile)
     - A **description** for your rule to easier understand it
 
-2. The plugin listens for `editor-change` events.
+2. The plugin listens for `editor-change` events and ending keys such as space or enter.
 3. On change, the entire note is normalized, all rules are tested, and any matches are replaced using your transform code.
 
 ---
@@ -56,6 +59,7 @@ The rule form includes:
 | **Rule ID**                | Unique identifier, lowercase only (`a-z`, `0-9`, `_`, `-`) |
 | **Regex pattern**          | Regex pattern without slashes. Supports groups.            |
 | **Regex Flags**            | Default is `g`, but you can use any combination            |
+| **Ignored blocks**         | Ignore code blocks, frontmatter, tildeblocks and titles    |
 | **Replacement code**       | JavaScript function receiving `(occurrence, editor, file)` |
 | **Description (Optional)** | Freeform text to explain the rule’s purpose                |
 
@@ -82,11 +86,63 @@ No escaping is needed. Just write it as-is.
 
 ---
 
-## 🚫 Ignore Options
+## 🚀 Advanced Features
+
+### Rule Overrides in Frontmatter
+
+You can override your global rules on a per-file basis using the `auto-replacer` key in your note's frontmatter. This gives you granular control without changing your global settings.
+
+```yaml
+---
+auto-replacer:
+  rule-id-1: false          # Disables a rule
+  rule-id-2: []             # Also disables a rule
+  rule-id-3:
+    - "{{mainRule}}"        # Uses the original global rule - Remember to use aspas here
+    - new-pattern           # Adds a new word to the rule
+    - /a{{file.basename}}/  # Supports regex and dynamic replacement
+---
+```
+
+### Advanced Templating
+
+Two special templates are available to make your rules more flexible.
+
+- `{{frontmatterString}}`: This template is replaced by the exact string you've defined in the frontmatter. It's a key feature for creating formatting rules that don't cause infinite loops.
+    
+- `{{mainRule}}`: Use this template within an array in your frontmatter to include the global rule's pattern alongside your custom ones.
+    
+
+### How `{{frontmatterString}}` works:
+
+You define a complex regex in your global rule that includes the `{{frontmatterString}}` placeholder. This lets you specify simple words or phrases in your frontmatter while the rule handles the full regex complexity, like checking for existing formatting.
+
+Example:
+
+To make a list of words bold while avoiding infinite loops:
+
+1. Global Rule: boldify
+2. Regex Pattern: `(?<!\*\*)\b{{frontmatterString}}\b(?!\*\*)`
+3. Replacement Code: ```(occurence) => `**${occurrence.original}**` ```    
+4. Frontmatter:
+    ```yaml
+    ---
+    auto-replacer:
+      boldify:
+        - "Sonic"
+        - "Dark Souls"
+    ---
+    ```
+    
+When the plugin runs, it will combine the pattern from the frontmatter with your global regex, effectively running a new, customized regex for each item on your list (e.g., `(?<!\*)\bSonic\b(?!\*)`).
+
+<img width="538" height="266" alt="image" src="https://github.com/user-attachments/assets/17be1cfb-59ee-4e48-8586-b847c079ac1c" />
+
+### 🚫 Ignore Options
 
 Auto Replacer allows you to **selectively ignore** certain parts of your markdown documents where you don't want rules to be applied. This prevents unwanted formatting in code blocks, frontmatter, and other structured content.
 
-### Available Ignore Options
+**Available Ignore Options**
 
 | Option                     | Description                                    | Example                           |
 | -------------------------- | ---------------------------------------------- | --------------------------------- |
@@ -112,12 +168,13 @@ But as a certain wise uncle once said:
 
 > With great power comes great responsibility.
 
-### 🌀 Infinite Loops
+### 🌀 Infinite Loops & Overlapping Rules
 
 Avoid rules that re-trigger themselves or interfere with other rules. Example of bad setup:
 
--   Rule A replaces "Narym" with "**Narym**"
--   But Rule B matches "**Narym**" and wants to re-format it
+- **Infinite Loops:** A rule that adds formatting but doesn't check for it can get stuck in an infinite loop. For example, a rule that formats "Narym" to "**Narym**" will keep re-triggering if its regex also matches "**Narym**". The `{{frontmatterString}}` template is designed to help prevent this.
+    
+- **Overlapping Rules:** The plugin does not handle overlapping rules gracefully. If one rule replaces a phrase and another rule targets a word within that same phrase, the results will be unpredictable. It's best to ensure each rule has a distinct search pattern.
 
 This can cause an **infinite loop** of updates. Always test your rules thoroughly.
 
@@ -230,4 +287,5 @@ Your support helps improve the plugin and means a lot 💛
 ## 📄 License
 
 MIT License © Alecell
+
 
