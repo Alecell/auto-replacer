@@ -254,7 +254,6 @@ export class RuleForm {
 			text: "Ignore tilde blocks",
 		});
 
-		// Checkbox para Ignore back quote blocks
 		const backQuoteCheckboxContainer = checkboxContainer.createEl("label", {
 			cls: "auto-replacer__rule-setting__checkbox-label",
 		});
@@ -270,7 +269,6 @@ export class RuleForm {
 			text: "Ignore back quote blocks",
 		});
 
-		// Checkbox para Ignore titles
 		const titlesCheckboxContainer = checkboxContainer.createEl("label", {
 			cls: "auto-replacer__rule-setting__checkbox-label",
 		});

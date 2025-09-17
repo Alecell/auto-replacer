@@ -1,7 +1,7 @@
 {
 	"id": "auto-replacer",
 	"name": "Auto Replacer",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"minAppVersion": "0.15.0",
 	"description": "Replace text in your notes automatically using regex rules and JavaScript functions. Apply custom formatting, corrections, or dynamic replacements as you type.",
 	"author": "Alecell",

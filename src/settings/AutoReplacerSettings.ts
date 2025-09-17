@@ -163,6 +163,31 @@ export class AutoReplacerSettingsTab extends PluginSettingTab {
 				desc.createEl("p", {
 					text: rule.description || "No description provided.",
 				});
+
+				const ignoreFlags = ruleItem.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-ignore-flags",
+				});
+				ignoreFlags.createEl("h6", { 
+					text: "Ignore Settings", 
+					cls: "auto-replacer__rule-setting__rule-ignore-flags__title" 
+				});
+				
+				const flagsContainer = ignoreFlags.createEl("div", {
+					cls: "auto-replacer__rule-setting__rule-ignore-flags__container",
+				});
+
+				const createFlagIndicator = (label: string, isActive?: boolean) => {
+					const flagEl = flagsContainer.createEl("span", {
+						cls: `auto-replacer__rule-setting__rule-ignore-flags__flag ${isActive ? 'active' : 'inactive'}`,
+						text: label,
+					});
+					flagEl.setAttribute("title", `${label}: ${isActive ? 'Enabled' : 'Disabled'}`);
+				};
+
+				createFlagIndicator("Frontmatter", rule.ignoreFrontmatter);
+				createFlagIndicator("Tilde Blocks", rule.ignoreTildeBlocks);
+				createFlagIndicator("Code Blocks", rule.ignoreBackQuoteBlocks);
+				createFlagIndicator("Titles", rule.ignoreTitles);
 			});
 		}
 	};

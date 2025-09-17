@@ -63,13 +63,12 @@ export interface IgnoredRanges {
 	titles: IgnoredRange[];
 }
 
-// Tipos para configuração via frontmatter
 export interface FrontmatterRuleConfig {
 	[ruleKey: string]: string[] | boolean;
 }
 
 export interface ProcessedRule extends Rule {
-	patterns?: RegExp[];        // Padrões regex processados do frontmatter
-	frontmatterStrings?: string[];  // Strings literais do frontmatter para usar com {{frontmatterString}}
-	enabled?: boolean;          // Se a regra está habilitada para este arquivo
+	patterns?: RegExp[];        
+	frontmatterStrings?: string[];  
+	enabled?: boolean;         
 }

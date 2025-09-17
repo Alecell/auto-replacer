@@ -1,6 +1,6 @@
 {
 	"name": "auto-replacer",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "Automatically replace text in Obsidian using regex-based rules and JavaScript transformations. Supports dynamic formatting, smart corrections, and context-aware replacements in real time.",
 	"main": "src/main.js",
 	"scripts": {

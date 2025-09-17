@@ -408,7 +408,7 @@ export class AutoReplacerPlugin {
 		const frontmatter = cache?.frontmatter;
 		return frontmatter?.['auto-replacer'] || {};
 	};
-	// TODO: colocar na visualização das regras os ignores se estão ativos ou não
+	
 	private mergeRulesWithFrontmatter = (
 		globalRules: Rule[], 
 		frontmatterConfig: FrontmatterRuleConfig,
